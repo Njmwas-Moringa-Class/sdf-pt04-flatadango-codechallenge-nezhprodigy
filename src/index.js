@@ -6,9 +6,9 @@ fetch("http://localhost:3000/films")
  .then((response) => response.json())
  .then((data) => {
   data.forEach((film) => {
-   const filmHTML = `
+   let filmHTML = `
     <li class="film item">
-     <a href="#" data id="${film.id}">${film.title}</a>
+     <a href="#" data-id="${film.id}">${film.title}</a>
      <button class="ui orange button buy-ticket">Buy Ticket</button>
     </li>
    `;
@@ -30,20 +30,18 @@ fetch("http://localhost:3000/films")
     </div>
     `;
     movieDetails.innerHTML = movieHTML;
-  })
-  .catch((error) => console.error(error));
+  });
 
-filmsList.addEventListener("click", (event) => {
-  if (event.target.tagName === "A") {
-    const filmId = event.target.dataset.id;
+filmsList.addEventListener('click', (event) => {
+  if (event.target.tagName === 'A') {
+    let filmId = event.target.id;
 
-    fetch(`/films`)
+    fetch(`http://localhost:3000/films/${filmId}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
 
      const availableTickets = data.capacity - data.tickets_sold;
-     const movieHTML = `
+     let movieHTML = `
 <div id="title" class="title”>${data.title}</div>
 <div id="runtime" class="meta”>${data.runtime} minuti</div>
 <img src="${data.poster}” alt="${data.title} poster" />
@@ -57,8 +55,7 @@ filmsList.addEventListener("click", (event) => {
 </div>
 `;
 movieDetails.innerHTML = movieHTML;
- })
-.catch((error) => console.error(error));
+ });
 }
 });
 
