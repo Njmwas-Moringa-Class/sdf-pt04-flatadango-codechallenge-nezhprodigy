@@ -32,19 +32,19 @@ fetch("http://localhost:3000/films")
     movieDetails.innerHTML = movieHTML;
   });
 
-filmsList.addEventListener('click', (event) => {
-  if (event.target.tagName === 'A') {
-    let filmId = event.target.id;
+filmsList.addEventListener('click', (e) => {
+  if (e.target.tagName === 'A') {
+    let filmId = e.target.dataset.id;
 
     fetch(`http://localhost:3000/films/${filmId}`)
     .then((response) => response.json())
     .then((data) => {
 
-     const availableTickets = data.capacity - data.tickets_sold;
+ const availableTickets = data.capacity - data.tickets_sold;
      let movieHTML = `
 <div id="title" class="title”>${data.title}</div>
 <div id="runtime" class="meta”>${data.runtime} minuti</div>
-<img src="${data.poster}” alt="${data.title} poster" />
+<img src="${data.poster}" alt="${data.title} poster" />
 <div class="content">
   <div class="description">
     <div id="film-info">${data.description}</div>
@@ -55,12 +55,23 @@ filmsList.addEventListener('click', (event) => {
 </div>
 `;
 movieDetails.innerHTML = movieHTML;
+console.log(movieDetails)
  });
 }
 });
 
-filmsList.addEventListener("click", (event) => {
-  if (event.target.tagName === "BUTTON") {
+document.getElementById('buy-ticket').addEventListener('click', () => {
+  let filmInfo = document.getElementById('film-info').dataset.id
+  
+    fetch(`http://localhost:3000/films/${filmInfo}`, {
+      method: 'POST'
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      let ticketNumber = document.getElementById('ticket-num');
+      let remainingTickets = data.capacity - data.tickets_sold;
+      ticketNumber.innerHTML = `${remainingTickets} remaining tickets`;
+    });
     // Buy ticket button
-  }
+  
 });
