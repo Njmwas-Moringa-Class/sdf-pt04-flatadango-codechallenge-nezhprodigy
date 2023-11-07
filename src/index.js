@@ -32,7 +32,7 @@ fetch('http://localhost:3000/films')
 .then(response => response.json())
 .then(data => {
   data.forEach(movie => {
-   const remainingTickets = movie.capacity - movie.tickets_sold
+  const remainingTickets = movie.capacity - movie.tickets_sold
   const li = document.createElement('li');
   li.classList.add('film', 'item');
   li.textContent = movie.title;
