@@ -3,8 +3,30 @@ const movieDetails = document.getElementById("showing");
 filmsList = document.getElementById("films");
 buyButton = document.getElementById("buy-ticket");
 ticketCount = parseInt(document.getElementById('ticket-num').textContent);
+soldOutFilm = document.querySelector('.film.item');
 
-// Retrieve details of the movie
+// Display first movie details
+fetch('http://localhost:3000/films/1')
+.then(response => response.json())
+.then(data => {
+  const remainingTickets = data.capacity - data.tickets_sold
+  const movieHTML = `
+  <div id="title" class="title">${data.title}</div>
+  <div id="runtime" class="meta">${data.runtime} minutes</div>
+  <img src="${data.poster}" alt="${data.title} poster"/>
+  <div class="content">
+   <div class="description">
+     <div id="film info">${data.description}</div>
+     <span id="showtime" class= "ui label">${data.showtime}</span>
+     <span id="ticket-num">${remainingTickets}</span> remaining tickets
+   </div>
+   <button id ="buy-ticket" class ="ui orange button">Buy Ticket</button>
+  </div>
+  `;
+  movieDetails.innerHTML= movieHTML;
+})
+
+// Retrieve details of the movies
  
 fetch('http://localhost:3000/films')
 .then(response => response.json())
@@ -39,7 +61,6 @@ buyButton.addEventListener("click", () => {
  } else {
   buyButton.textContent = 'SOLD OUT!';
 
-  const soldOutFilm = document.querySelector('.film.item');
   soldOutFilm.classList.add('SOLD OUT!');
   alert('Oops looks like this showing is already sold out!');
  }
